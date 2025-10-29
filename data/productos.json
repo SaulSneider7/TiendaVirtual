@@ -1,0 +1,115 @@
+{
+  "negocio": {
+    "nombre": "Mi Tienda Online",
+    "whatsapp": "51987654321",
+    "moneda": "S/"
+  },
+  "productos": [
+    {
+      "id": 1,
+      "nombre": "Producto 1",
+      "descripcion": "Descripción detallada del producto 1",
+      "precio": 500.00,
+      "imagen": "https://picsum.photos/200",
+      "categoria": "Electrónica",
+      "caracteristicas": ["Característica 1", "Característica 2", "Característica 3"],
+      "stock": 10
+    },
+    {
+      "id": 2,
+      "nombre": "Producto 2",
+      "descripcion": "Descripción detallada del producto 2",
+      "precio": 75.50,
+      "imagen": "https://picsum.photos/200/300",
+      "categoria": "Hogar"
+    },
+    {
+      "id": 3,
+      "nombre": "Producto 3",
+      "descripcion": "Descripción detallada del producto 3",
+      "precio": 120.00,
+      "imagen": "https://picsum.photos/200/400",
+      "categoria": "Electrónica"
+    },
+    {
+      "id": 4,
+      "nombre": "Producto 4",
+      "descripcion": "Descripción detallada del producto 4",
+      "precio": 150.00,
+      "imagen": "https://picsum.photos/200/500",
+      "categoria": "Hogar"
+    },
+    {
+      "id": 5,
+      "nombre": "Producto 5",
+      "descripcion": "Descripción detallada del producto 5",
+      "precio": 250.00,
+      "imagen": "https://picsum.photos/200/600",
+      "categoria": "Electrónica"
+    },
+    {
+      "id": 6,
+      "nombre": "Producto 6",
+      "descripcion": "Descripción detallada del producto 6",
+      "precio": 180.00,
+      "imagen": "https://picsum.photos/200/700",
+      "categoria": "Hogar"
+    },
+    {
+      "id": 7,
+      "nombre": "Producto 7",
+      "descripcion": "Descripción detallada del producto 7",
+      "precio": 300.00,
+      "imagen": "https://picsum.photos/200/800",
+      "categoria": "Electrónica"
+    },
+    {
+      "id": 8,
+      "nombre": "Producto 8",
+      "descripcion": "Descripción detallada del producto 8",
+      "precio": 220.00,
+      "imagen": "https://picsum.photos/200/900",
+      "categoria": "Hogar"
+    },
+    {
+      "id": 9,
+      "nombre": "Producto 9",
+      "descripcion": "Descripción detallada del producto 9",
+      "precio": 400.00,
+      "imagen": "https://picsum.photos/200/1000",
+      "categoria": "Electrónica"
+    },
+    {
+      "id": 10,
+      "nombre": "Producto 10",
+      "descripcion": "Descripción detallada del producto 10",
+      "precio": 280.00,
+      "imagen": "https://picsum.photos/200/1100",
+      "categoria": "Hogar"
+    },
+    {
+      "id": 11,
+      "nombre": "Producto 11",
+      "descripcion": "Descripción detallada del producto 11",
+      "precio": 350.00,
+      "imagen": "https://picsum.photos/200/1200",
+      "categoria": "Electrónica"
+    },
+    {
+      "id": 12,
+      "nombre": "Producto 12",
+      "descripcion": "Descripción detallada del producto 12",
+      "precio": 320.00,
+      "imagen": "https://picsum.photos/200/1300",
+      "categoria": "Hogar"
+    },
+    {
+      "id": 13,
+      "nombre": "Producto 13",
+      "descripcion": "Descripción detallada del producto 13",
+      "precio": 390.00,
+      "imagen": "https://picsum.photos/200/1400",
+      "categoria": "Electrónica"
+    }
+  ]
+}
