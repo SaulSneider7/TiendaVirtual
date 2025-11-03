@@ -56,8 +56,10 @@ $conn->close();
     <nav class="bg-gray-800 text-white">
         <div class="container mx-auto px-4">
             <ul class="flex space-x-4 py-4">
-                <li><a href="dashboard.php" class="hover:text-blue-400">Dashboard</a></li>
-                <li><a href="productos.php" class="hover:text-blue-400 font-semibold">Productos</a></li>
+                <li><a href="dashboard.php" class="hover:text-blue-400 font-semibold">Dashboard</a></li>
+                <li><a href="productos.php" class="hover:text-blue-400">Productos</a></li>
+                <li><a href="categorias.php" class="hover:text-blue-400">Categorías</a></li>
+                <li><a href="configuracion.php" class="hover:text-blue-400">Configuración</a></li>
             </ul>
         </div>
     </nav>

@@ -35,7 +35,13 @@ try {
         'negocio' => [
             'nombre' => $config['nombre_tienda'],
             'whatsapp' => $config['whatsapp'],
-            'moneda' => $config['moneda']
+            'moneda' => $config['moneda'],
+            'facebook' => $config['facebook'] ?? '',
+            'instagram' => $config['instagram'] ?? '',
+            'twitter' => $config['twitter'] ?? '',
+            'tiktok' => $config['tiktok'] ?? '',
+            'email' => $config['email'] ?? '',
+            'direccion' => $config['direccion'] ?? ''
         ],
         'productos' => $productos
     ];
