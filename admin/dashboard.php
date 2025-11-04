@@ -15,12 +15,14 @@ $conn->close();
 ?>
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - Panel Administrativo</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
+
 <body class="bg-gray-100">
     <!-- Header -->
     <header class="bg-white shadow-md sticky top-0 z-50">
@@ -119,21 +121,53 @@ $conn->close();
         <!-- Quick Actions -->
         <div class="bg-white rounded-lg shadow-md p-6">
             <h2 class="text-2xl font-bold mb-6">Acciones Rápidas</h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                <a href="productos.php" class="bg-blue-600 hover:bg-blue-700 text-white rounded-lg p-6 text-center transition">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <a href="productos.php"
+                    class="bg-blue-600 hover:bg-blue-700 text-white rounded-lg p-6 text-center transition">
                     <span class="text-4xl mb-2 block">➕</span>
                     <p class="font-semibold">Agregar Producto</p>
                 </a>
-                <a href="productos.php" class="bg-green-600 hover:bg-green-700 text-white rounded-lg p-6 text-center transition">
+                <a href="productos.php"
+                    class="bg-green-600 hover:bg-green-700 text-white rounded-lg p-6 text-center transition">
                     <span class="text-4xl mb-2 block">📋</span>
                     <p class="font-semibold">Ver Todos los Productos</p>
                 </a>
-                <a href="../index.php" target="_blank" class="bg-purple-600 hover:bg-purple-700 text-white rounded-lg p-6 text-center transition">
+                <a href="../index.php" target="_blank"
+                    class="bg-purple-600 hover:bg-purple-700 text-white rounded-lg p-6 text-center transition">
                     <span class="text-4xl mb-2 block">🌐</span>
                     <p class="font-semibold">Ver Tienda Online</p>
                 </a>
+                <!-- 🆕 Botón Compartir -->
+                <button onclick="compartirTienda()"
+                    class="bg-yellow-500 hover:bg-yellow-600 text-white rounded-lg p-6 text-center transition w-full">
+                    <span class="text-4xl mb-2 block">🔗</span>
+                    <p class="font-semibold">Compartir Tienda</p>
+                </button>
             </div>
         </div>
     </main>
+
+    <script>
+    function compartirTienda() {
+        const enlaceTienda = window.location.origin + "/index.php"; // Ruta base + página principal
+        if (navigator.share) {
+            navigator.share({
+                title: "Mi Tienda Online",
+                text: "¡Mira mi tienda virtual!",
+                url: enlaceTienda
+            }).catch(() => {
+                // Si el usuario cancela el compartir
+                console.log("Compartir cancelado");
+            });
+        } else {
+            navigator.clipboard.writeText(enlaceTienda).then(() => {
+                alert("📋 Enlace copiado al portapapeles:\n" + enlaceTienda);
+            }).catch(() => {
+                alert("❌ No se pudo copiar el enlace. Intenta manualmente.");
+            });
+        }
+    }
+    </script>
 </body>
+
 </html>
