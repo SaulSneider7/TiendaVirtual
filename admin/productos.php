@@ -7,11 +7,6 @@ $conn = getConnection();
 // Obtener categorías para el select
 $categorias = $conn->query("SELECT * FROM categorias ORDER BY nombre");
 
-// Obtener productos
-$productos = $conn->query("SELECT p.*, c.nombre as categoria_nombre FROM productos p 
-                           LEFT JOIN categorias c ON p.categoria_id = c.id 
-                           ORDER BY p.created_at DESC");
-
 $conn->close();
 ?>
 <!DOCTYPE html>
@@ -21,43 +16,87 @@ $conn->close();
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestión de Productos</title>
     <script src="https://cdn.tailwindcss.com"></script>
+    <!-- DataTables CSS -->
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.7/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/responsive/2.5.0/css/responsive.dataTables.min.css">
+    
+    <!-- jQuery (requerido por DataTables) -->
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <!-- DataTables JS -->
+    <script src="https://cdn.datatables.net/1.13.7/js/jquery.dataTables.min.js"></script>
+    <script src="https://cdn.datatables.net/responsive/2.5.0/js/dataTables.responsive.min.js"></script>
+    
+    <style>
+        /* Estilos personalizados para DataTables */
+        .dataTables_wrapper {
+            padding: 20px;
+        }
+        .dataTables_filter input {
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            padding: 0.5rem 1rem;
+            margin-left: 0.5rem;
+        }
+        .dataTables_length select {
+            border: 1px solid #d1d5db;
+            border-radius: 0.5rem;
+            padding: 0.5rem;
+            margin: 0 0.5rem;
+        }
+        table.dataTable thead th {
+            background: #1f2937;
+            color: white;
+            font-weight: 600;
+            padding: 12px;
+        }
+        table.dataTable tbody tr:hover {
+            background-color: #f9fafb;
+        }
+        .badge-active {
+            background: #dcfce7;
+            color: #166534;
+            padding: 4px 12px;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+        .badge-inactive {
+            background: #fee2e2;
+            color: #991b1b;
+            padding: 4px 12px;
+            border-radius: 9999px;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+        .stock-low {
+            color: #dc2626;
+            font-weight: bold;
+        }
+    </style>
 </head>
 <body class="bg-gray-100">
     <!-- Header -->
-    <header class="bg-white shadow-md sticky top-0 z-50">
-        <div class="container mx-auto px-4 py-4 flex flex-col sm:flex-row sm:justify-between sm:items-center gap-3">
-            
-            <!-- Título -->
-            <h1 class="text-xl sm:text-2xl font-bold text-gray-800 text-center sm:text-left">
-                Gestión de Productos
-            </h1>
-
-            <!-- Controles -->
-            <div class="flex flex-wrap justify-center sm:justify-end items-center gap-2 sm:gap-4">
-                <span class="text-gray-700 text-sm sm:text-base">
-                    👋 Hola, <strong><?php echo htmlspecialchars($_SESSION['admin_username']); ?></strong>
-                </span>
-
-                <a href="../index.php" target="_blank" 
-                class="bg-blue-600 hover:bg-blue-700 text-white px-3 sm:px-4 py-2 rounded-lg transition text-sm flex items-center gap-1 sm:gap-2">
-                    🛍️ <span>Ver Tienda</span>
+    <header class="bg-white shadow-md">
+        <div class="container mx-auto px-4 py-4 flex justify-between items-center">
+            <h1 class="text-2xl font-bold text-gray-800">Gestión de Productos</h1>
+            <div class="flex items-center gap-4">
+                <span class="text-gray-600">Hola, <?php echo $_SESSION['admin_username']; ?></span>
+                <a href="../index.php" target="_blank" class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition">
+                    Ver Tienda
                 </a>
-
-                <a href="logout.php" 
-                class="bg-red-600 hover:bg-red-700 text-white px-3 sm:px-4 py-2 rounded-lg transition text-sm flex items-center gap-1 sm:gap-2">
-                    🚪 <span>Cerrar</span>
+                <a href="logout.php" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-lg transition">
+                    Cerrar Sesión
                 </a>
             </div>
         </div>
     </header>
 
-
     <!-- Navigation -->
     <nav class="bg-gray-800 text-white">
         <div class="container mx-auto px-4">
             <ul class="flex space-x-4 py-4">
-                <li><a href="dashboard.php" class="hover:text-blue-400 font-semibold">Dashboard</a></li>
-                <li><a href="productos.php" class="hover:text-blue-400">Productos</a></li>
+                <li><a href="dashboard.php" class="hover:text-blue-400">Dashboard</a></li>
+                <li><a href="productos.php" class="hover:text-blue-400 font-semibold">Productos</a></li>
                 <li><a href="categorias.php" class="hover:text-blue-400">Categorías</a></li>
                 <li><a href="configuracion.php" class="hover:text-blue-400">Configuración</a></li>
             </ul>
@@ -66,79 +105,36 @@ $conn->close();
 
     <!-- Main Content -->
     <main class="container mx-auto px-4 py-8">
-    <!-- Botón Agregar Producto -->
-    <div class="mb-6 flex justify-between items-center">
-        <h2 class="text-xl font-semibold text-gray-800">Listado de Productos</h2>
-        <button onclick="openModal()" 
-            class="bg-blue-600 hover:bg-blue-700 text-white px-5 py-2.5 rounded-lg font-medium flex items-center gap-2 transition">
-            ➕ <span>Agregar Producto</span>
-        </button>
-    </div>
+        <!-- Botón Agregar Producto -->
+        <div class="mb-6 flex justify-between items-center">
+            <button onclick="openModal()" class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition">
+                ➕ Agregar Nuevo Producto
+            </button>
+            <div class="text-sm text-gray-600">
+                💡 Tip: Usa el buscador para encontrar productos rápidamente
+            </div>
+        </div>
 
-    <!-- Tabla de Productos (scroll horizontal en móvil) -->
-    <div class="bg-white rounded-lg shadow-md overflow-x-auto">
-        <table class="w-full min-w-[700px]">
-            <thead class="bg-gray-800 text-white text-sm">
-                <tr>
-                    <th class="px-4 py-3 text-left">ID</th>
-                    <th class="px-4 py-3 text-left">Imagen</th>
-                    <th class="px-4 py-3 text-left">Nombre</th>
-                    <th class="px-4 py-3 text-left">Categoría</th>
-                    <th class="px-4 py-3 text-left">Precio</th>
-                    <th class="px-4 py-3 text-left">Stock</th>
-                    <th class="px-4 py-3 text-left">Estado</th>
-                    <th class="px-4 py-3 text-center">Acciones</th>
-                </tr>
-            </thead>
-            <tbody id="productosTable" class="text-gray-700 text-sm">
-                <?php while($producto = $productos->fetch_assoc()): ?>
-                <tr class="border-b hover:bg-gray-50 transition">
-                    <td class="px-4 py-3"><?php echo $producto['id']; ?></td>
-                    <td class="px-4 py-3">
-                        <img src="../<?php echo $producto['imagen']; ?>" 
-                             alt="<?php echo htmlspecialchars($producto['nombre']); ?>" 
-                             class="w-14 h-14 object-cover rounded-lg shadow-sm">
-                    </td>
-                    <td class="px-4 py-3 font-medium"><?php echo htmlspecialchars($producto['nombre']); ?></td>
-                    <td class="px-4 py-3"><?php echo htmlspecialchars($producto['categoria_nombre']); ?></td>
-                    <td class="px-4 py-3 font-semibold">S/ <?php echo number_format($producto['precio'], 2); ?></td>
-                    <td class="px-4 py-3">
-                        <span class="<?php echo $producto['stock'] < 5 ? 'text-red-600 font-bold' : ''; ?>">
-                            <?php echo $producto['stock']; ?>
-                        </span>
-                    </td>
-                    <td class="px-4 py-3">
-                        <span class="px-2 py-1 rounded-full text-xs font-semibold
-                            <?php echo $producto['activo'] 
-                                ? 'bg-green-100 text-green-700' 
-                                : 'bg-red-100 text-red-700'; ?>">
-                            <?php echo $producto['activo'] ? 'Activo' : 'Inactivo'; ?>
-                        </span>
-                    </td>
-                    <td class="px-4 py-3 text-center flex justify-center gap-2">
-                        <button 
-                            class="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1.5 rounded text-sm btn-edit transition" 
-                            data-product='<?php echo htmlspecialchars(json_encode($producto), ENT_QUOTES, 'UTF-8'); ?>'>
-                            ✏️ Editar
-                        </button>
-
-                        <button onclick="deleteProduct(<?php echo $producto['id']; ?>)" 
-                            class="bg-red-500 hover:bg-red-600 text-white px-3 py-1.5 rounded text-sm transition">
-                            🗑️ Eliminar
-                        </button>
-                    </td>
-                </tr>
-                <?php endwhile; ?>
-            </tbody>
-        </table>
-    </div>
-
-    <!-- Nota para pantallas pequeñas -->
-    <p class="text-gray-500 text-sm mt-3 text-center sm:hidden">
-        🔄 Desliza horizontalmente para ver todos los campos →
-    </p>
-</main>
-
+        <!-- Tabla de Productos con DataTables -->
+        <div class="bg-white rounded-lg shadow-md overflow-hidden">
+            <table id="productosTable" class="display responsive nowrap" style="width:100%">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Categoría</th>
+                        <th>Precio</th>
+                        <th>Stock</th>
+                        <th>Estado</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Los datos se cargarán vía AJAX -->
+                </tbody>
+            </table>
+        </div>
+    </main>
 
     <!-- Modal para Agregar/Editar Producto -->
     <div id="productModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
@@ -212,6 +208,75 @@ $conn->close();
     </div>
 
     <script>
+        let productTable;
+
+        $(document).ready(function() {
+            // Inicializar DataTable
+            productTable = $('#productosTable').DataTable({
+                ajax: {
+                    url: '../api/get_productos_admin.php',
+                    dataSrc: 'productos'
+                },
+                columns: [
+                    { data: 'id' },
+                    { data: 'nombre' },
+                    { data: 'categoria_nombre' },
+                    { 
+                        data: 'precio',
+                        render: function(data, type, row) {
+                            return 'S/ ' + parseFloat(data).toFixed(2);
+                        }
+                    },
+                    { 
+                        data: 'stock',
+                        render: function(data, type, row) {
+                            if (data < 5) {
+                                return '<span class="stock-low">' + data + '</span>';
+                            }
+                            return data;
+                        }
+                    },
+                    { 
+                        data: 'activo',
+                        render: function(data, type, row) {
+                            if (data == 1) {
+                                return '<span class="badge-active">Activo</span>';
+                            } else {
+                                return '<span class="badge-inactive">Inactivo</span>';
+                            }
+                        }
+                    },
+                    {
+                        data: null,
+                        orderable: false,
+                        render: function(data, type, row) {
+                            return `
+                                <button onclick='editProduct(${JSON.stringify(row)})' class="bg-yellow-500 hover:bg-yellow-600 text-white px-3 py-1 rounded mr-2" title="Editar">
+                                    ✏️
+                                </button>
+                                <button onclick="viewProduct(${row.id})" class="bg-blue-500 hover:bg-blue-600 text-white px-3 py-1 rounded mr-2" title="Ver">
+                                    👁️
+                                </button>
+                                <button onclick="deleteProduct(${row.id})" class="bg-red-500 hover:bg-red-600 text-white px-3 py-1 rounded" title="Eliminar">
+                                    🗑️
+                                </button>
+                            `;
+                        }
+                    }
+                ],
+                language: {
+                    url: '//cdn.datatables.net/plug-ins/1.13.7/i18n/es-ES.json'
+                },
+                responsive: true,
+                pageLength: 25,
+                order: [[0, 'desc']],
+                dom: 'Bfrtip',
+                buttons: [
+                    'copy', 'csv', 'excel', 'pdf', 'print'
+                ]
+            });
+        });
+
         function openModal() {
             document.getElementById('productModal').classList.remove('hidden');
             document.getElementById('modalTitle').textContent = 'Agregar Producto';
@@ -224,14 +289,7 @@ $conn->close();
             document.getElementById('productModal').classList.add('hidden');
         }
 
-        document.querySelectorAll('.btn-edit').forEach(btn => {
-            btn.addEventListener('click', () => {
-                const product = JSON.parse(btn.getAttribute('data-product'));
-                openEditModal(product);
-            });
-        });
-
-        function openEditModal(product) {
+        function editProduct(product) {
             document.getElementById('productModal').classList.remove('hidden');
             document.getElementById('modalTitle').textContent = 'Editar Producto';
             
@@ -249,6 +307,10 @@ $conn->close();
             `;
         }
 
+        function viewProduct(productId) {
+            window.open(`../producto.php?id=${productId}`, '_blank');
+        }
+
         document.getElementById('productForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
@@ -263,13 +325,14 @@ $conn->close();
                 const data = await response.json();
                 
                 if (data.success) {
-                    alert(data.message);
-                    location.reload();
+                    alert('✅ ' + data.message);
+                    closeModal();
+                    productTable.ajax.reload();
                 } else {
-                    alert('Error: ' + data.message);
+                    alert('❌ Error: ' + data.message);
                 }
             } catch (error) {
-                alert('Error al guardar el producto');
+                alert('❌ Error al guardar el producto');
                 console.error(error);
             }
         });
@@ -291,13 +354,13 @@ $conn->close();
                 const data = await response.json();
                 
                 if (data.success) {
-                    alert(data.message);
-                    location.reload();
+                    alert('✅ ' + data.message);
+                    productTable.ajax.reload();
                 } else {
-                    alert('Error: ' + data.message);
+                    alert('❌ Error: ' + data.message);
                 }
             } catch (error) {
-                alert('Error al eliminar el producto');
+                alert('❌ Error al eliminar el producto');
                 console.error(error);
             }
         }
