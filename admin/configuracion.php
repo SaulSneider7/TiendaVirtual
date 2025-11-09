@@ -12,7 +12,7 @@ $conn->close();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Configuración de la Tienda</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../assets/output.css">
 </head>
 <body class="bg-gray-100">
     <!-- Header -->
@@ -127,31 +127,6 @@ $conn->close();
         </div>
     </main>
 
-    <script>
-        document.getElementById('configForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            const formData = new FormData(this);
-            
-            try {
-                const response = await fetch('../api/save_config.php', {
-                    method: 'POST',
-                    body: formData
-                });
-                
-                const data = await response.json();
-                
-                if (data.success) {
-                    alert('✅ ' + data.message);
-                    location.reload();
-                } else {
-                    alert('❌ Error: ' + data.message);
-                }
-            } catch (error) {
-                alert('❌ Error al guardar la configuración');
-                console.error(error);
-            }
-        });
-    </script>
+    <script src="./assets/js/configuracion.js"></script>
 </body>
 </html>

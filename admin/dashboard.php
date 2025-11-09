@@ -20,7 +20,7 @@ $conn->close();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dashboard - Panel Administrativo</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../assets/output.css">
 </head>
 
 <body class="bg-gray-100">
@@ -147,27 +147,7 @@ $conn->close();
         </div>
     </main>
 
-    <script>
-    function compartirTienda() {
-        const enlaceTienda = window.location.origin + "/index.php"; // Ruta base + página principal
-        if (navigator.share) {
-            navigator.share({
-                title: "Mi Tienda Online",
-                text: "¡Mira mi tienda virtual!",
-                url: enlaceTienda
-            }).catch(() => {
-                // Si el usuario cancela el compartir
-                console.log("Compartir cancelado");
-            });
-        } else {
-            navigator.clipboard.writeText(enlaceTienda).then(() => {
-                alert("📋 Enlace copiado al portapapeles:\n" + enlaceTienda);
-            }).catch(() => {
-                alert("❌ No se pudo copiar el enlace. Intenta manualmente.");
-            });
-        }
-    }
-    </script>
+    <script src="./assets/js/dashboard.js"></script>
 </body>
 
 </html>

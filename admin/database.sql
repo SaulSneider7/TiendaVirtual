@@ -75,5 +75,13 @@ VALUES (
         'admin@tienda.com'
     );
 
--- NOTA: Cambia la contraseña después de instalar ejecutando:
--- UPDATE admin_users SET password = PASSWORD('tu_nueva_contraseña') WHERE username = 'admin';
+
+
+-- Agregar campos de redes sociales a la tabla configuracion
+ALTER TABLE configuracion
+ADD COLUMN facebook VARCHAR(255) DEFAULT NULL,
+ADD COLUMN instagram VARCHAR(255) DEFAULT NULL,
+ADD COLUMN twitter VARCHAR(255) DEFAULT NULL,
+ADD COLUMN tiktok VARCHAR(255) DEFAULT NULL,
+ADD COLUMN email VARCHAR(255) DEFAULT NULL,
+ADD COLUMN direccion TEXT DEFAULT NULL;

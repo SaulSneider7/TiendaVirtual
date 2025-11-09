@@ -16,7 +16,7 @@ $conn->close();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gestión de Categorías</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="../assets/output.css">
 </head>
 <body class="bg-gray-100">
     <!-- Header -->
@@ -90,7 +90,7 @@ $conn->close();
     </main>
 
     <!-- Modal para Agregar/Editar Categoría -->
-    <div id="categoryModal" class="hidden fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+    <div id="categoryModal" class="hidden fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl shadow-2xl max-w-md w-full">
             <div class="bg-blue-600 text-white p-6">
                 <h2 class="text-2xl font-bold" id="modalTitle">Agregar Categoría</h2>
@@ -116,83 +116,6 @@ $conn->close();
         </div>
     </div>
 
-    <script>
-        function openModal() {
-            document.getElementById('categoryModal').classList.remove('hidden');
-            document.getElementById('modalTitle').textContent = 'Agregar Categoría';
-            document.getElementById('categoryForm').reset();
-            document.getElementById('categoryId').value = '';
-        }
-
-        function closeModal() {
-            document.getElementById('categoryModal').classList.add('hidden');
-        }
-
-        function editCategory(category) {
-            document.getElementById('categoryModal').classList.remove('hidden');
-            document.getElementById('modalTitle').textContent = 'Editar Categoría';
-            document.getElementById('categoryId').value = category.id;
-            document.getElementById('nombre').value = category.nombre;
-        }
-
-        document.getElementById('categoryForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            const formData = new FormData(this);
-            
-            try {
-                const response = await fetch('../api/save_categoria.php', {
-                    method: 'POST',
-                    body: formData
-                });
-                
-                const data = await response.json();
-                
-                if (data.success) {
-                    alert('✅ ' + data.message);
-                    location.reload();
-                } else {
-                    alert('❌ Error: ' + data.message);
-                }
-            } catch (error) {
-                alert('❌ Error al guardar la categoría');
-                console.error(error);
-            }
-        });
-
-        async function deleteCategory(id, productCount) {
-            if (productCount > 0) {
-                if (!confirm(`Esta categoría tiene ${productCount} productos. ¿Estás seguro de eliminarla? Los productos quedarán sin categoría.`)) {
-                    return;
-                }
-            } else {
-                if (!confirm('¿Estás seguro de eliminar esta categoría?')) {
-                    return;
-                }
-            }
-            
-            try {
-                const response = await fetch('../api/delete_categoria.php', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    },
-                    body: JSON.stringify({ id: id })
-                });
-                
-                const data = await response.json();
-                
-                if (data.success) {
-                    alert('✅ ' + data.message);
-                    location.reload();
-                } else {
-                    alert('❌ Error: ' + data.message);
-                }
-            } catch (error) {
-                alert('❌ Error al eliminar la categoría');
-                console.error(error);
-            }
-        }
-    </script>
+   <script src="./assets/js/categorias.js"></script>
 </body>
 </html>

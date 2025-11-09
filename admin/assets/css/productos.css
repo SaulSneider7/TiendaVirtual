@@ -1,0 +1,53 @@
+/* Estilos personalizados para DataTables */
+.dataTables_wrapper {
+    padding: 20px;
+}
+
+.dataTables_filter input {
+    border: 1px solid #d1d5db;
+    border-radius: 0.5rem;
+    padding: 0.5rem 1rem;
+    margin-left: 0.5rem;
+}
+
+.dataTables_length select {
+    border: 1px solid #d1d5db;
+    border-radius: 0.5rem;
+    padding: 0.5rem;
+    margin: 0 0.5rem;
+}
+
+table.dataTable thead th {
+    background: #1f2937;
+    color: white;
+    font-weight: 600;
+    padding: 12px;
+}
+
+table.dataTable tbody tr:hover {
+    background-color: #f9fafb;
+}
+
+.badge-active {
+    background: #dcfce7;
+    color: #166534;
+    padding: 4px 12px;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+.badge-inactive {
+    background: #fee2e2;
+    color: #991b1b;
+    padding: 4px 12px;
+    border-radius: 9999px;
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+.stock-low {
+    color: #dc2626;
+    font-weight: bold;
+}
+
