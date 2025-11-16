@@ -174,7 +174,7 @@ function showProductDetail(productId) {
                                     class="flex-1 bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 px-6 rounded-lg transition text-lg"
                                     ${product.stock === 0 ? 'disabled' : ''}
                                 >
-                                    ${product.stock === 0 ? '⛔ Agotado' : '🛒 Agregar al carrito'}
+                                    ${product.stock === 0 ? '⛔ Agotado' : '<i class="fa-brands fa-whatsapp"></i> Agregar al carrito'}
                                 </button>
                                 <button 
                                     onclick="buyNow(${product.id})"
@@ -223,7 +223,7 @@ function renderRelatedProducts(category, excludeId) {
                             <span class="text-xl font-bold text-blue-600">${storeData.negocio.moneda} ${product.precio.toFixed(2)}</span>
                             <button 
                                 onclick="event.stopPropagation(); addToCart(${product.id})"
-                                class="bg-blue-600 hover:bg-blue-700 text-white px-3 py-1 rounded-lg font-semibold transition text-sm"
+                                class="bg-blue-600 hover:bg-blue-700 cursor-pointer text-white px-3 py-1 rounded-lg font-semibold transition text-sm"
                             >
                                 Agregar
                             </button>
@@ -336,7 +336,7 @@ function renderProducts(products) {
 
     grid.innerHTML = paginatedProducts.map(product => `
                 <a href="producto.php?id=${product.id}" class="bg-white rounded-xl shadow-lg overflow-hidden hover:shadow-xl transition transform hover:-translate-y-1">
-                    <img src="${product.imagen}" alt="${product.nombre}" class="w-full h-48 object-cover" loading="lazy">
+                    <img src="${product.imagen}" alt="${product.nombre}" class="w-full h-48 object-fill" loading="lazy">
                     <div class="p-4">
                         <h3 class="font-bold text-lg mb-2">${product.nombre}</h3>
                         <p class="text-gray-600 text-sm mb-3">${product.descripcion}</p>
@@ -344,7 +344,7 @@ function renderProducts(products) {
                             <span class="text-2xl font-bold text-blue-600">${storeData.negocio.moneda} ${product.precio.toFixed(2)}</span>
                             <button 
                                 onclick="event.preventDefault(); event.stopPropagation(); addToCart(${product.id})"
-                                class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-semibold transition"
+                                class="bg-blue-600 cursor-pointer hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-semibold transition"
                             >
                                 Agregar
                             </button>
@@ -435,7 +435,7 @@ function renderCart() {
                         <span class="w-8 text-center font-bold">${item.quantity}</span>
                         <button onclick="changeQuantity(${item.id}, 1)" class="bg-blue-600 hover:bg-blue-700 text-white w-8 h-8 rounded-full font-bold">+</button>
                     </div>
-                    <button onclick="removeFromCart(${item.id})" class="text-red-500 hover:text-red-700 font-bold">🗑️</button>
+                    <button onclick="removeFromCart(${item.id})" class="text-red-500 hover:text-red-700 font-bold"> <i class="fa-solid fa-trash"></i></button>
                 </div>
             `).join('');
 
