@@ -5,100 +5,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cargando producto...</title>
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="./assets/img/favicon.ico" type="image/x-icon">
     <link rel="stylesheet" href="./assets/output.css">
     <!-- <script src="https://cdn.tailwindcss.com"></script> -->
     <!-- FontAwesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
-    <!-- SweetAlert2 -->
-    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
+    <!-- Producto CSS -->
     <link rel="stylesheet" href="./assets/css/producto.css">
 
-    <style>
-    /* Micro estilos adicionales */
-    .card-hover {
-        transition: transform .28s cubic-bezier(.2, .8, .2, 1), box-shadow .28s;
-    }
-
-    .card-hover:hover {
-        transform: translateY(-6px);
-        box-shadow: 0 18px 40px rgba(20, 40, 80, 0.12);
-    }
-
-    .pulse-btn {
-        transition: transform .18s;
-    }
-
-    .pulse-btn:active {
-        transform: scale(.98);
-    }
-
-    .cart-badge-anim {
-        animation: cartPulse .36s ease;
-    }
-
-    @keyframes cartPulse {
-        0% {
-            transform: scale(1);
-        }
-
-        50% {
-            transform: scale(1.25);
-        }
-
-        100% {
-            transform: scale(1);
-        }
-    }
-
-    /* loader pequeño */
-    .skeleton {
-        background: linear-gradient(90deg, #f3f4f6, #e6eefc, #f3f4f6);
-        background-size: 200% 100%;
-        animation: shine 1.2s linear infinite;
-    }
-
-    @keyframes shine {
-        0% {
-            background-position: 200% 0
-        }
-
-        100% {
-            background-position: -200% 0
-        }
-    }
-
-
-    @keyframes fadeIn {
-        from {
-            opacity: 0;
-        }
-
-        to {
-            opacity: 1;
-        }
-    }
-
-    @keyframes zoomIn {
-        from {
-            transform: scale(0.85);
-            opacity: 0;
-        }
-
-        to {
-            transform: scale(1);
-            opacity: 1;
-        }
-    }
-
-    .animate-fadeIn {
-        animation: fadeIn .25s ease-out;
-    }
-
-    .animate-zoomIn {
-        animation: zoomIn .25s ease-out;
-    }
-    </style>
 </head>
 
 <body class="bg-gradient-to-b from-white to-gray-50 text-gray-800">
@@ -414,7 +329,10 @@
         </div>
     </div>
 
-    <script src="./assets/js/producto.js?v=<?= time() ?>"></script>
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <!-- Producto JS -->
+    <script src="./assets/js/producto.js"></script>
 </body>
 
 </html>
